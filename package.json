@@ -8,6 +8,12 @@
     "dev": "nodemon src/app.ts",
     "build": "tsc -p ."
   },
+  "@comment scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "prestart": "yarn build",
+    "start": "node ."
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,5 +26,6 @@
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.1",
     "typescript": "^3.7.4"
-  }
+  },
+  "repository": "git@github.com:misawsneto/tstests.git"
 }
