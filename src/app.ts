@@ -1,18 +1,38 @@
+import * as dotenv from "dotenv";
 import express, {Application, Request, Response, NextFunction} from 'express';
+// import { timingSafeEqual } from "crypto";
+
 
 const app: Application = express();
 
-const add = (a: number, b:number): number => a+b;
+dotenv.config();
 
-function sub(a: number, b:number){
-    return a-b;
+class App {
+    public express: express.Application;
+
+    public constructor(){
+        this.express = express();
+        this.middlewares();
+        this.database();
+        this.routes();
+    }
+
+    private middlewares(): void {
+    }
+
+    private database(): void {
+    }
+
+    private routes(): void {}
 }
 
-app.get('/', (req: Request, res: Response) => {
-    console.log(add(1,1));
-    // console.log(add(1,'asd'));
-    console.log(sub(2,1));
-    res.send('Hello 3');
-});
+export default new App().express;
 
-app.listen(5000, () => console.log('Running'));
+// app.get('/', (req: Request, res: Response) => {
+//     console.log(add(1,1));
+//     // console.log(add(1,'asd'));
+//     console.log(sub(2,1));
+//     res.send('Hello 3' + ` Test var ${process.env.TEST_VAR}`);
+// });
+
+// app.listen(5000, () => console.log('Running'));
