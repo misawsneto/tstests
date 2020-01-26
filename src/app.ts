@@ -1,38 +1,44 @@
 import * as dotenv from "dotenv";
 import express, {Application, Request, Response, NextFunction} from 'express';
+import morgan from "morgan";
+import cors from 'cors';
 // import { timingSafeEqual } from "crypto";
 
+// dotenv.config();
+import routes from './routes';
 
-const app: Application = express();
+export class App {
+  private expressApp: Application;
 
-dotenv.config();
+  public constructor(private port?: number | string) {
+    this.expressApp = express();
+    this.settings();
+  }
 
-class App {
-    public express: express.Application;
+  private settings() {
+    this.expressApp.set("port", this.port || process.env.PORT || 3000);
+    this.middlewares();
+    this.database();
+    this.routes();
+  }
 
-    public constructor(){
-        this.express = express();
-        this.middlewares();
-        this.database();
-        this.routes();
-    }
+  private middlewares(): void {
+    this.expressApp.use(express.json());
+    this.expressApp.use(cors());
+    this.expressApp.use(morgan('dev')); 
+  }
 
-    private middlewares(): void {
-    }
+  private database(): void {}
 
-    private database(): void {
-    }
+  private routes(): void {
+    this.expressApp.use(routes);
+  }
 
-    private routes(): void {}
+  /**
+   * startServer
+   */
+  async startServer(): Promise<void> {
+    await this.expressApp.listen(this.expressApp.get("port"));
+    console.log("Server on port ", this.expressApp.get("port"));
+  }
 }
-
-export default new App().express;
-
-// app.get('/', (req: Request, res: Response) => {
-//     console.log(add(1,1));
-//     // console.log(add(1,'asd'));
-//     console.log(sub(2,1));
-//     res.send('Hello 3' + ` Test var ${process.env.TEST_VAR}`);
-// });
-
-// app.listen(5000, () => console.log('Running'));
